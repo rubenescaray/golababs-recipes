@@ -1,4 +1,4 @@
-# Golababs Recipes
+# ShuffleSpace  Recipes
 React recipe manager app with JWT login, in express
 
 ## Setup
