@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
 import Header from './components/Header'
 import Recipes from './components/Recipes'
@@ -8,9 +8,10 @@ import AddRecipe from './components/AddRecipe'
 import Login from './components/Login'
 import Register from './components/Register'
 import AuthService from './services/authService'
-
+import { removeMsg, setMsg } from './redux/message'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [showAddRecipe, setShowAddRecipe] = useState(false)
   const [recipes, setRecipes] = useState([])
   const { isAuthenticated } = useSelector(state => state.user)
@@ -51,8 +52,11 @@ const App = () => {
     })
     
     if (res.status === 200) {
-      alert('Recipe Deleted!')
-      getRecipes()
+      dispatch(setMsg({message: 'Recipe Deleted', completed: true }))
+      setTimeout(() => {
+        dispatch(removeMsg())
+        getRecipes()
+      }, 1500)
     } else {
       alert('Error Deleting This Recipe')
     }
@@ -72,7 +76,7 @@ const App = () => {
           isAuthenticated={isAuthenticated}
         />
         <Routes>
-          <Route 
+          <Route
             path='/login'
             element={
               <Login isAuthenticated={isAuthenticated} />
@@ -95,7 +99,7 @@ const App = () => {
                     onDelete={deleteRecipe}
                   />
                 ) : (
-                  'No Recipes To Show'
+                  <div className='no-recipes'>No Recipes To Show</div>
                 )}
               </>
             }

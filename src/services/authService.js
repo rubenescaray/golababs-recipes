@@ -12,7 +12,6 @@ class AuthService {
       })
 
       const data = await res.json()
-      localStorage.setItem('user', JSON.stringify(data))
       return data
     } catch (e) {
       console.error(e)
@@ -30,7 +29,6 @@ class AuthService {
     })
 
     const data = await res.json()
-    localStorage.setItem('user', JSON.stringify(data))
     return data
     } catch(e) {
       console.error(e)

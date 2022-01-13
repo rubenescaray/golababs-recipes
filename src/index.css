@@ -112,3 +112,24 @@ footer {
   justify-content: center;
   margin-top: 1em;
 }
+
+.no-recipes {
+  display: flex;
+  margin-top: 2em;
+  justify-content: center;
+}
+
+.message {
+  height: 2em;
+  width: 95%;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  margin: 5px auto;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.message p {
+  padding-top: 4px;
+}

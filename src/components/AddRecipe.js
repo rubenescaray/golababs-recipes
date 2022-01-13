@@ -1,37 +1,48 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeMsg, setMsg } from '../redux/message'
 
 const AddRecipe = ({ onAdd, getRecipes }) => {
+  const dispatch = useDispatch()
+  const userId = useSelector(state => state.user.user["id"])
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [cookingTime, setCookingTime] = useState(0)
-  const userId = useSelector(state => state.user.user["id"])
+
+  const setMessage = (message, completed = true) => {
+    dispatch(setMsg({ message, completed }))
+  }
 
   const onSubmit = (e) => {
+    dispatch(removeMsg())
     e.preventDefault()
 
     if (!title) {
-      alert('Please add a recipe title')
+      setMessage('Please add a recipe title', false)
       return
     }
 
     if (!description) {
-      alert('Please add a recipe description or instructions')
+      setMessage('Please add a recipe description or instructions', false)
       return
     }
 
     if (typeof Number(description) != 'number') {
-      alert('Please specify the number of minutes it takes to cook')
+      setMessage('Please specify the number of minutes it takes to cook', false)
       return
     }
 
-    const resp = onAdd({ title, description, cookingTime, userId })
+    onAdd({ title, description, cookingTime, userId })
 
-    alert('Reciped added')
+    setMessage(`Recipe ${title} added!`)
     setTitle('')
     setDescription('')
     setCookingTime(0)
-    getRecipes()
+
+    setTimeout(() => {
+      dispatch(removeMsg())
+      getRecipes()
+    }, 1000)
   }
 
   return (

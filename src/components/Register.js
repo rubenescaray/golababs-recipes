@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import AuthService from '../services/authService'
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/user'
+import { setMsg, removeMsg } from '../redux/message'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -13,16 +14,23 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    dispatch(removeMsg())
     const resp = await AuthService.register(username, email, password)
 
-    if (resp.error) {
-      alert(resp.error)
+    if (resp.msg) {
+      const payload = { message: resp.msg, completed: false }
+      dispatch(setMsg(payload))
       return
     }
 
+    const payload = { message: 'User created and logged!', completed: true }
+    dispatch(setMsg(payload))
     dispatch(login(resp))
-    alert('User created and logged!')
-    navigate('/recipes')
+    setTimeout(() => {
+      dispatch(removeMsg())
+      navigate('/recipes')
+    }, 1500)
+
   }
 
   useEffect(() => {

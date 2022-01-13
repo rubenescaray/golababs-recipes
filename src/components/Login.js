@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import AuthService from '../services/authService'
 import { login } from '../redux/user'
 import { useDispatch } from 'react-redux'
+import { setMsg, removeMsg } from '../redux/message'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -12,16 +13,23 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    dispatch(removeMsg())
     const resp = await AuthService.login(username, password)
 
     if (resp.msg) {
-      alert(resp.msg)
+      const payload = { message: resp.msg, completed: false }
+      dispatch(setMsg(payload))
       return
     }
 
-    dispatch(login(resp))
-    alert('Welcome!')
-    navigate('/recipes')
+    const payload = { message: `Welcome back, ${resp.user.username}!`, completed: true }
+    dispatch(setMsg(payload))
+
+    setTimeout(() => {
+      dispatch(login(resp))
+      dispatch(removeMsg())
+      navigate('/recipes')
+    }, 1500)
   }
 
   useEffect(() => {
