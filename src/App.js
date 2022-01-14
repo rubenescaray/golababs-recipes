@@ -63,7 +63,6 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log(`is user authenticated? ${isAuthenticated}`)
     getRecipes()
   }, [])
 
@@ -77,7 +76,7 @@ const App = () => {
         />
         <Routes>
           <Route
-            path='/login'
+            path='/'
             element={
               <Login isAuthenticated={isAuthenticated} />
             }
