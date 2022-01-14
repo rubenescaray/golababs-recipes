@@ -15,6 +15,11 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     dispatch(removeMsg())
+    
+    if (!username || !password || !email) {
+      dispatch(setMsg({ message: 'Please enter all fields', completed: false }))
+    }
+
     const resp = await AuthService.register(username, email, password)
 
     if (resp.msg) {
@@ -70,7 +75,7 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <input type='submit' value='Register' className='btn btn-block' />
+        <input type='submit' value='Register' data-testid="register-submit" className='btn btn-block' />
       </form>
       </div>
     </div>

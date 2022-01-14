@@ -30,7 +30,7 @@ const Header = ({ onAdd, showAdd, isAuthenticated }) => {
     setTimeout(() => {
       dispatch(removeMsg())
       dispatch(logout())
-      navigate('/login')
+      navigate('/')
     }, 1500)
   }
 
@@ -51,10 +51,11 @@ const Header = ({ onAdd, showAdd, isAuthenticated }) => {
             />
           </p>}
         </div>
-        {!isAuthenticated && <Link to={isRegistering ? '/login' : '/register'}>
+        {!isAuthenticated && <Link to={isRegistering ? '/' : '/register'}>
           <Button
             color={'green'}
             text={isRegistering ? 'Log In' : 'Register'}
+            name="toggle-signup-button"
           />
         </Link>}
         {isAuthenticated && <Button
@@ -64,7 +65,7 @@ const Header = ({ onAdd, showAdd, isAuthenticated }) => {
         />}
       </header>
       {showMsg && <div className='message' style={{backgroundColor: completed ? '#BFE324' : '#FF6961'}}>
-        <p>{message}</p>
+        <p data-testid="message">{message}</p>
       </div>}
     </div>
   )

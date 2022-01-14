@@ -14,6 +14,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     dispatch(removeMsg())
+
+    if (!username || !password) {
+      dispatch(setMsg({ message: 'Please enter all fields', completed: false }))
+    }
+
     const resp = await AuthService.login(username, password)
 
     if (resp.msg) {
@@ -61,7 +66,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <input type='submit' value='Login' className='btn btn-block' />
+        <input type='submit' value='Login' data-testid="login-submit" className='btn btn-block' />
       </form>
       </div>
     </div>
